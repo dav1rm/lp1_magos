@@ -1,9 +1,6 @@
 #include <iostream>
 #include <cstring>
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "../include/stb_image_write.h"
-
 #include "../include/canvas.h"
 
 using namespace canvas;
@@ -35,12 +32,4 @@ int main(void)
     auto width = c.width();
     auto height = c.height();
     auto pixels = c.buffer(); // Ponteiro para o vetor de bytes representando a imagem.
-
-    // Invocando a função de gravação da biblioteca STB para gravar PNG.
-    stbi_write_png_compression_level = 0; // defaults to 8; set to higher for more compression
-    stbi_write_png("teste.png",           // file name
-                   width, height,         // image dimensions
-                   3,                     // # of channels per pixel
-                   pixels,                // the pixels
-                   width * 3);            // length of a row (in bytes), see above.
 }
