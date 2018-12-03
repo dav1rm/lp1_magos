@@ -8,10 +8,13 @@ namespace mzr
         public:
         
         enum game_state_e {   
-            ERROR
+            ERROR,
+            RUNNING
         };
         enum messages{
-            MENSAGEM_TESTE
+            OK,
+            USING_DEFAULT_VALUES,
+            TOO_MANY_ARGUMENTS
         };
         struct ResultType
         {   
@@ -20,12 +23,12 @@ namespace mzr
         };
       
         
-        void welcome();
-        ResultType initialize(int argc, char ** argv);
-        void process_events();
-        void update();
         void render();
+        void update();
+        void welcome();
+        void process_events();
         bool game_over();
+        ResultType initialize(int argc, char ** argv);
 
         private:
         
