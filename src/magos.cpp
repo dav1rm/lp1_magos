@@ -31,7 +31,10 @@ namespace mzr
         return *ans;
     }
 
-    void MagosGame::process_events(){}
+    void MagosGame::process_events()
+    {
+        
+    }
     void MagosGame::update(){}
     void MagosGame::render(){}
 
