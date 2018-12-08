@@ -9,6 +9,9 @@ Ms. Iolanda Chagas Costa Paiva
 
 g++ -Wall -std=c++11 src/*.cpp -I includes -o build/exec
 
+*temporario
+g++ -Wall -std=c++11 src/driver_maze.cpp src/canvas.cpp src/maze.cpp -I includes -o exec
+
 ---------------------- EXECUTION -----------------------
 
 build/exec < build/entrada.txt > build/saida2.txt
