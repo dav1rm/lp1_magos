@@ -14,10 +14,10 @@
 				int cols;
 				enum cell_e
 				{
-					RightWall, 
-					BottomWall, 
-					UpperWall, 
-					LeftWall
+					LeftWall,
+					UpperWall,
+					RightWall, 					  
+					BottomWall
 				};
 				struct cell
 				{
