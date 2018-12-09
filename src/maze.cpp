@@ -31,12 +31,15 @@ namespace mzr{
 			std::cout << "{";
 			for (unsigned int j = 0; j < hashs[i].size(); j++)
 			{
-				std::cout << hashs[i][j];
+				if(j==hashs[i].size()-1)
+					std::cout << hashs[i][j];
+				else
+					std::cout << hashs[i][j] << ",";
 			}
 			if(i==hashs.size()-1)
-			std::cout << "}";
+				std::cout << "}";
 			else
-			std::cout << "},";
+				std::cout << "},";
 		}
 		std::cout << "}"<< std::endl;
 	}
