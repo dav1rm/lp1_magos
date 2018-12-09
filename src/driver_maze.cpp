@@ -11,13 +11,7 @@ int main(void)
     mzr::Maze m( 2, 2 );
     m.create_maze();
     m.create_hash();
-    for(std::vector <int> &hash: m.hashs ) {
-        std::cout << " { ";
-        std::copy(hash.begin(),
-			hash.end(),
-			std::ostream_iterator<int>(std::cout, " "));
-        std::cout << "} ";
-    }
+    m.print_hash();
     // Construtor do render e passando o maze (no render recebemos com Maze *).
     mzr::Render render( &m, 200,200 );
     // vamos derrubar a parede direita da celulua (1,2)

@@ -23,6 +23,23 @@ namespace mzr{
 	{
 
 	}
+	void Maze::print_hash()
+	{
+		std::cout << "hast table: {";
+		for (unsigned int i = 0; i < hashs.size(); i++)
+		{
+			std::cout << "{";
+			for (unsigned int j = 0; j < hashs[i].size(); j++)
+			{
+				std::cout << hashs[i][j];
+			}
+			if(i==hashs.size()-1)
+			std::cout << "}";
+			else
+			std::cout << "},";
+		}
+		std::cout << "}"<< std::endl;
+	}
 	void Maze::create_hash()
 	{	
 		for(unsigned int element = 0; element < maze.size(); element ++)

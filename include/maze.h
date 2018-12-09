@@ -35,6 +35,7 @@
 				void create_maze();
 				void create_hash();
 				void knock_down(int row, int col, cell_e wall);
+				void print_hash();
 			private:
 
     private:
