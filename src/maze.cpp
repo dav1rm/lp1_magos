@@ -27,7 +27,8 @@ namespace mzr{
 	{	
 		for(unsigned int element = 0; element < maze.size(); element ++)
 		{
-			std::vector <int> actual_hash = get_hash(element);
+			
+			int actual_hash = get_hash(element);
 			if(maze[element].wall[0] != '1') 	// check if left wall is down
 				if(!is_border_wall(maze[element], LeftWall))
 					add_neighbor(actual_hash, element, LeftWall);
@@ -40,33 +41,41 @@ namespace mzr{
 			if(maze[element].wall[3] != '1'){ 	// check if bottom wall is down
 				if(!is_border_wall(maze[element], BottomWall)){
 					add_neighbor(actual_hash, element, BottomWall);
-					}
+				}
 			}
 			
 			//for (char & w: maze[element].wall)
 			//	if(w != '1') add_neighbor(actual_hash, element);		
 		}
 	}
-	std::vector <int> Maze::get_hash(int element)
+	int Maze::get_hash(int element)
 	{
-		for(std::vector <int> &hash: hashs ) {
-			if (std::find(hash.begin(), hash.end(), element) != hash.end()) return hash;
+		for(unsigned int index = 0; index < hashs.size(); index++) {
+			if (std::find(hashs[index].begin(), hashs[index].end(), element) != hashs[index].end()) return index;
 		}
 		std::vector <int> new_vec;
 		new_vec.push_back(element);
 		hashs.push_back(new_vec);
-		return hashs[hashs.size()-1];
+		return hashs.size()-1;
 	}
-	void Maze::add_neighbor(std::vector <int> hash, int element, Maze::cell_e wall)
+	void Maze::add_neighbor(int hash, int element, Maze::cell_e wall)
 	{
+		
+		
 		if(wall == LeftWall)
-			if (!(std::find(hash.begin(), hash.end(), element) != hash.end())) hash.push_back(element - 1);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element) != hashs[hash].end()))
+				hashs[hash].push_back(element - 1);
 		if(wall == UpperWall)
-			if (!(std::find(hash.begin(), hash.end(), element) != hash.end())) hash.push_back(element - rows);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element) != hashs[hash].end())) 
+				hashs[hash].push_back(element - rows);
 		if(wall == RightWall)
-			if (!(std::find(hash.begin(), hash.end(), element) != hash.end())) hash.push_back(element + 1);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element) != hashs[hash].end())) 
+				hashs[hash].push_back(element + 1);
 		if(wall == BottomWall){
-			if (!(std::find(hash.begin(), hash.end(), element) != hash.end())) hash.push_back(element + rows);
+			//hashs[0].push_back(element + rows);
+			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element) != hashs[hash].end())) 
+				hashs[hash].push_back(element + rows);
+			
 		}
 	}
 	void Maze::create_maze()
