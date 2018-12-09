@@ -8,10 +8,10 @@
 int main(void)
 {
     // Cria um labirinto 5 x 7.
-    mzr::Maze m( 5, 7 );
+    mzr::Maze m( 14, 10 );
     m.create_maze();
     // Construtor do render e passando o maze (no render recebemos com Maze *).
-    mzr::Render render( &m, 500,700 );
+    mzr::Render render( &m, 700,500 );
     // vamos derrubar a parede direita da celulua (1,2)
     //m.knock_down( 1, 2, mzr::Maze::cell_e::RightWall );
 	// vamos derrubar a parede de baixo da mesma célula.

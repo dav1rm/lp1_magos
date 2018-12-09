@@ -30,7 +30,7 @@ namespace mzr
     {
       return m_height;
     }
-    void draw(const char * name_img) const
+      void draw(const char * name_img) const
     {
         
       canvas::Canvas c(m_width, m_height);
@@ -38,21 +38,21 @@ namespace mzr
       auto height = c.height();    
       auto pixels = c.buffer(); 
       
-      // Vamos desenhar um retângulo cujo canto superior esquerdo está em (100,100).
-      canvas::coord_type orig_x{0}, orig_y{0};
-      // // Vamos utilizar uma linha com 3 pixels de largura.
-      // c.thickness(15);
-      for(int i =0; i < m_maze.cols*m_maze.rows; i++)
+      // Drawing walls
+      int margin = 50;  // set margin
+      int line_h_size = (c.width() - 2 * margin)/m_maze.cols;   // define horizontal line size
+      int line_v_size = (c.height() - 2 * margin)/m_maze.rows;  // define vertical line size
+      for (unsigned int orig_y = margin; orig_y <= c.height() - line_v_size - margin; orig_y+=line_v_size)
       {
-        // Um retângulo pode ser formado através do desenho de 4 linhas.
-        c.hline(orig_x, orig_y, width/m_maze.cols, canvas::RED);
-        c.vline(orig_x, orig_y, height/m_maze.rows, canvas::STEEL_BLUE);
-        if (orig_x < width)
-        orig_x += width/m_maze.cols;
-        if (orig_y < height)
-        orig_y += width/m_maze.rows;
-      }
-      
+        for (unsigned int orig_x = margin; orig_x <= c.width() - line_h_size - margin; orig_x+=line_h_size)
+        {
+          c.hline(orig_x, orig_y, line_h_size, canvas::RED);
+          c.vline(orig_x, orig_y, line_v_size, canvas::STEEL_BLUE);
+        }
+      }  
+      // Vamos desenhar um retângulo cujo canto superior esquerdo está em (100,100).
+      // // Vamos utilizar uma linha com 3 pixels de largura.
+      // c.thickness(15);          
 
       // Invocando a função de gravação da biblioteca STB para gravar PNG.
       stbi_write_png_compression_level = 0; // defaults to 8; set to higher for more compression
