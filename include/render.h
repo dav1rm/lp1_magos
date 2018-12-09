@@ -42,14 +42,26 @@ namespace mzr
       int margin = 50;  // set margin
       int line_h_size = (c.width() - 2 * margin)/m_maze.cols;   // define horizontal line size
       int line_v_size = (c.height() - 2 * margin)/m_maze.rows;  // define vertical line size
-      for (unsigned int orig_y = margin; orig_y <= c.height() - line_v_size - margin; orig_y+=line_v_size)
+
+      for (unsigned int i = 0; i < m_maze.maze.size(); i++)
       {
-        for (unsigned int orig_x = margin; orig_x <= c.width() - line_h_size - margin; orig_x+=line_h_size)
-        {
-          c.hline(orig_x, orig_y, line_h_size, canvas::RED);
-          c.vline(orig_x, orig_y, line_v_size, canvas::STEEL_BLUE);
-        }
-      }  
+        if(m_maze.maze[i].wall[0] == '1') c.vline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //left
+        if(m_maze.maze[i].wall[1] == '1') c.hline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin, line_h_size, canvas::STEEL_BLUE); //upper
+        if(m_maze.maze[i].wall[2] == '1') c.vline(m_maze.maze[i].x * line_h_size + margin + line_h_size, m_maze.maze[i].y * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //right
+        if(m_maze.maze[i].wall[3] == '1') c.hline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin + line_v_size, line_h_size, canvas::STEEL_BLUE); //bottom
+
+      }
+     
+      //for (unsigned int orig_y = margin; orig_y <= c.height() - line_v_size - margin; orig_y+=line_v_size)
+      //{
+      //  for (unsigned int orig_x = margin; orig_x <= c.width() - line_h_size - margin; orig_x+=line_h_size)
+      //  {
+      //    c.hline(orig_x, orig_y, line_h_size, canvas::RED);
+      //    c.vline(orig_x, orig_y, line_v_size, canvas::RED);
+      // }
+      //}  
+
+
       // Vamos desenhar um retângulo cujo canto superior esquerdo está em (100,100).
       // // Vamos utilizar uma linha com 3 pixels de largura.
       // c.thickness(15);          
