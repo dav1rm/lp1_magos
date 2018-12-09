@@ -30,7 +30,8 @@
 				//std::string ** hash_table;
 				Maze(int=8, int=6);
 				std::vector <int> get_hash(int element);
-				void add_neig(std::vector <int> hash, int element);
+				bool is_border_wall(cell element, cell_e wall);
+				void add_neighbor(std::vector <int> hash, int element, cell_e wall);
 				void create_maze();
 				void create_hash();
 				void knock_down(int row, int col, cell_e wall);
