@@ -19,9 +19,9 @@ namespace mzr{
 		
 		return false;
 	}
-	void Maze::knock_down(int row, int col, Maze::cell_e wall)
+	void Maze::knock_down(int x, int y, Maze::cell_e wall)
 	{
-
+		maze[xy_to_vet(x, y)].wall[wall] = '0';
 	}
 	void Maze::create_hash()
 	{	
@@ -58,19 +58,32 @@ namespace mzr{
 	void Maze::add_neighbor(int hash, int element, Maze::cell_e wall)
 	{
 		if(wall == Maze::cell_e::LeftWall)
+		{
+			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - 1) != hashs[hash].end()))
-				hashs[hash].push_back(element - 1);
+			hashs[hash].push_back(element - 1);
+		}
+
 		if(wall == Maze::cell_e::UpperWall)
+		{
+			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - rows) != hashs[hash].end())) 
-				hashs[hash].push_back(element - rows);
+			hashs[hash].push_back(element - rows);
+		}
+			
 		if(wall == Maze::cell_e::RightWall)
+		{	
+			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + 1) != hashs[hash].end())) 
 				hashs[hash].push_back(element + 1);
+		}
 		if(wall == Maze::cell_e::BottomWall){
+			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + rows) != hashs[hash].end())) 
 				hashs[hash].push_back(element + rows);
 			
 		}
+		std::cout << std::endl;
 	}
 	void Maze::create_maze()
 	{
@@ -78,9 +91,56 @@ namespace mzr{
 		{
 			for(int y = 0; y < cols; y ++)
 			{
-				cell element = {x,y,"1010"};
+				cell element = {x,y,"0001"};
 				maze.push_back(element);
 			}
 		}
+		fix_collisions();
+	}
+	int Maze::xy_to_vet(int x, int y)
+		{return ((rows * x) + y);}
+	
+	void Maze::fix_collisions()
+	{
+		for(Maze::cell &element : maze) {
+			if (!is_border_wall(element, Maze::LeftWall))
+			{
+				auto left_neighbor = maze[xy_to_vet(element.x, element.y) - 1];
+				if( left_neighbor.wall[2] != element.wall[0])
+				{
+					knock_down(left_neighbor.x, left_neighbor.y, Maze::RightWall);
+					knock_down(element.x, element.y, Maze::LeftWall);
+				}
+			}
+			if (!is_border_wall(element, Maze::UpperWall))
+			{
+				auto upper_neighbor = maze[xy_to_vet(element.x, element.y) - cols];
+				if( upper_neighbor.wall[3] != element.wall[1])
+				{
+					knock_down(upper_neighbor.x, upper_neighbor.y, Maze::BottomWall);
+					knock_down(element.x, element.y, Maze::UpperWall);
+				}
+			}
+			if (!is_border_wall(element, Maze::RightWall))
+			{
+				auto right_neighbor = maze[xy_to_vet(element.x, element.y) + 1];
+				if( right_neighbor.wall[0] != element.wall[2])
+				{
+					knock_down(right_neighbor.x, right_neighbor.y, Maze::LeftWall);
+					knock_down(element.x, element.y, Maze::RightWall);
+				}
+			}
+			if (!is_border_wall(element, Maze::BottomWall))
+			{
+				auto bottom_neighbor = maze[xy_to_vet(element.x, element.y) - cols];
+				if( bottom_neighbor.wall[1] != element.wall[3])
+				{
+					knock_down(bottom_neighbor.x, bottom_neighbor.y, Maze::UpperWall);
+					knock_down(element.x, element.y, Maze::BottomWall);
+				}
+			}
+			
+		}
+		
 	}
 }
