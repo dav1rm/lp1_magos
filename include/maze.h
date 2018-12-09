@@ -1,6 +1,8 @@
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <cstring>
+#include <algorithm>
 #ifndef MAZE_H
 #define MAZE_H
 
@@ -24,9 +26,13 @@
 					std::string wall;
 				};
 				std::vector <cell> maze;
+				std::vector <std::vector <int>> hashs;
 				//std::string ** hash_table;
 				Maze(int=8, int=6);
+				std::vector <int> get_hash(int element);
+				void add_neig(std::vector <int> hash, int element);
 				void create_maze();
+				void create_hash();
 				void knock_down(int row, int col, cell_e wall);
 			private:
 
