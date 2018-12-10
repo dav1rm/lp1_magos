@@ -1,5 +1,7 @@
 #include <iostream>
-
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "../include/maze.h"
 namespace mzr{
 	Maze::Maze(int rs, int cs) : rows(rs), cols(cs)
@@ -85,11 +87,13 @@ namespace mzr{
 	}
 	void Maze::create_maze()
 	{
+		srand (time(NULL));
 		for (int x = 0; x < rows; x ++)
 		{
 			for(int y = 0; y < cols; y ++)
 			{
-				cell element = {x,y,"1101"};
+				std::string wall_string = std::to_string(rand()%2) + std::to_string(rand()%2) + std::to_string(rand()%2) + std::to_string(rand()%2);
+				cell element = {x,y,wall_string};
 				maze.push_back(element);
 			}
 		}
