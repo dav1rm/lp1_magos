@@ -33,11 +33,12 @@
 				int xy_to_vet(int x, int y);
 				bool is_border_wall(cell element, cell_e wall);
 				bool has_x_down_walls(std::string wall_string, int x);
-				void fix(cell element, cell neighbor);
+				void fix(cell element, cell neighbor, cell_e wall_e, cell_e wall_n);
 				void fix_collisions();
 				void add_neighbor(int hash, int element, cell_e wall);
 				void create_maze();
 				void create_hash();
+				void set_border();
 				void build_wall(int x, int y, cell_e wall);
 				void knock_down(int x, int y, cell_e wall);
 			private:
