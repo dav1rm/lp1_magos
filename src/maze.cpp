@@ -166,7 +166,7 @@ namespace mzr{
 			}
 			if (!is_border_wall(element, Maze::cell_e::BottomWall))
 			{
-				auto bottom_neighbor = maze[xy_to_vet(element.x, element.y) - cols];
+				auto bottom_neighbor = maze[xy_to_vet(element.x, element.y) + cols];
 				if( bottom_neighbor.wall[Maze::cell_e::UpperWall] != element.wall[Maze::cell_e::BottomWall])
 				{
 					fix(element, bottom_neighbor, Maze::cell_e::BottomWall, Maze::cell_e::UpperWall);
