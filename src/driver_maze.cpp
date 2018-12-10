@@ -8,7 +8,7 @@
 int main(void)
 {
     // Cria um labirinto 5 x 7.
-    mzr::Maze m( 2, 2 );
+    mzr::Maze m( 20, 20 );
     m.create_maze();
     m.create_hash();
         //for(std::vector <int> &hash: m.hashs ) {
@@ -18,9 +18,9 @@ int main(void)
         //        std::ostream_iterator<int>(std::cout, " "));
         //     std::cout << "} ";
         // }
-        
+
     // Construtor do render e passando o maze (no render recebemos com Maze *).
-    mzr::Render render( &m, 200,200 );
+    mzr::Render render( &m, 400,400 );
     // vamos derrubar a parede direita da celulua (1,2)
     //m.knock_down( 1, 2, mzr::Maze::cell_e::RightWall );
 	// vamos derrubar a parede de baixo da mesma célula.
