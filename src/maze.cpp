@@ -21,13 +21,16 @@ namespace mzr{
 	}
 	void Maze::knock_down(int x, int y, Maze::cell_e wall)
 	{
-		maze[xy_to_vet(x, y)].wall[wall] = '0';
+		// 	O vertor não reconhece
+		//	00	01  mas sim
+		//	10	11	 00	 10
+		//			 01	 11
+		maze[xy_to_vet(y, x)].wall[wall] = '0';
 	}
 	void Maze::create_hash()
 	{	
 		for(unsigned int element = 0; element < maze.size(); element ++)
 		{
-			
 			int actual_hash = get_hash(element);
 			if(maze[element].wall[0] != '1') 	// check if left wall is down
 				if(!is_border_wall(maze[element], Maze::cell_e::LeftWall))
@@ -59,31 +62,26 @@ namespace mzr{
 	{
 		if(wall == Maze::cell_e::LeftWall)
 		{
-			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - 1) != hashs[hash].end()))
 			hashs[hash].push_back(element - 1);
 		}
 
 		if(wall == Maze::cell_e::UpperWall)
 		{
-			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - rows) != hashs[hash].end())) 
 			hashs[hash].push_back(element - rows);
 		}
 			
 		if(wall == Maze::cell_e::RightWall)
 		{	
-			std::cout << element << wall;
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + 1) != hashs[hash].end())) 
 				hashs[hash].push_back(element + 1);
 		}
-		if(wall == Maze::cell_e::BottomWall){
-			std::cout << element << wall;
+		if(wall == Maze::cell_e::BottomWall)
+		{
 			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + rows) != hashs[hash].end())) 
-				hashs[hash].push_back(element + rows);
-			
+				hashs[hash].push_back(element + rows);	
 		}
-		std::cout << std::endl;
 	}
 	void Maze::create_maze()
 	{
@@ -91,7 +89,7 @@ namespace mzr{
 		{
 			for(int y = 0; y < cols; y ++)
 			{
-				cell element = {x,y,"0001"};
+				cell element = {x,y,"1101"};
 				maze.push_back(element);
 			}
 		}
@@ -103,11 +101,14 @@ namespace mzr{
 	void Maze::fix_collisions()
 	{
 		for(Maze::cell &element : maze) {
+
+			//std::cout << '('<< element.x << ", "<<element.y<< ") \n";
 			if (!is_border_wall(element, Maze::LeftWall))
-			{
+			{	
 				auto left_neighbor = maze[xy_to_vet(element.x, element.y) - 1];
 				if( left_neighbor.wall[2] != element.wall[0])
 				{
+					//std::cout << "Will knockdown " << LeftWall << std::endl;
 					knock_down(left_neighbor.x, left_neighbor.y, Maze::RightWall);
 					knock_down(element.x, element.y, Maze::LeftWall);
 				}
@@ -117,6 +118,7 @@ namespace mzr{
 				auto upper_neighbor = maze[xy_to_vet(element.x, element.y) - cols];
 				if( upper_neighbor.wall[3] != element.wall[1])
 				{
+					//std::cout << "Will knockdown " << UpperWall << std::endl;
 					knock_down(upper_neighbor.x, upper_neighbor.y, Maze::BottomWall);
 					knock_down(element.x, element.y, Maze::UpperWall);
 				}
@@ -126,6 +128,7 @@ namespace mzr{
 				auto right_neighbor = maze[xy_to_vet(element.x, element.y) + 1];
 				if( right_neighbor.wall[0] != element.wall[2])
 				{
+					//std::cout << "Will knockdown " << RightWall << std::endl;
 					knock_down(right_neighbor.x, right_neighbor.y, Maze::LeftWall);
 					knock_down(element.x, element.y, Maze::RightWall);
 				}
@@ -135,6 +138,7 @@ namespace mzr{
 				auto bottom_neighbor = maze[xy_to_vet(element.x, element.y) - cols];
 				if( bottom_neighbor.wall[1] != element.wall[3])
 				{
+					//std::cout << "Will knockdown " << BottomWall << std::endl;
 					knock_down(bottom_neighbor.x, bottom_neighbor.y, Maze::UpperWall);
 					knock_down(element.x, element.y, Maze::BottomWall);
 				}
