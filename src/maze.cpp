@@ -37,30 +37,74 @@ namespace mzr{
 	{	
 		for(unsigned int element = 0; element < maze.size(); element ++)
 		{
-			int actual_hash = get_hash(element);
-			if(maze[element].wall[0] != '1') 	// check if left wall is down
+			std::cout << "element " << element << std::endl;
+			auto hash = get_hash(element);
+			// PRINT HASHS
+			std::cout << "ADD " << hash << std::endl;	
+			
+			// PRINT HASHS
+			std::cout << "HASHS ";
+			for(std::vector <int> &hash: hashs ) {
+			std::cout << " { ";
+			std::copy(hash.begin(),
+				hash.end(),
+				std::ostream_iterator<int>(std::cout, " "));
+				std::cout << "} ";
+			}
+			std::cout << std::endl;
+			
+			if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
+			{
 				if(!is_border_wall(maze[element], Maze::cell_e::LeftWall))
-					add_neighbor(actual_hash, element, Maze::cell_e::LeftWall);
-			if(maze[element].wall[Maze::cell_e::UpperWall] != '1') 	// check if upper wall is down
+					add_neighbor(hash, element, Maze::cell_e::LeftWall);
+			}
+			if(maze[element].wall[Maze::cell_e::UpperWall] != '1') 	
+			{
 				if(!is_border_wall(maze[element], Maze::cell_e::UpperWall))
-					add_neighbor(actual_hash, element, Maze::cell_e::UpperWall);
+					add_neighbor(hash, element, Maze::cell_e::UpperWall);
+			}
 			if(maze[element].wall[Maze::cell_e::RightWall] != '1') 	// checMaze::cell_e::LeftWall if right wall is down
+			{
 				if(!is_border_wall(maze[element], Maze::cell_e::RightWall))
-					add_neighbor(actual_hash, element, RightWall);
-			if(maze[element].wall[3] != '1'){ 	// check if bottom wall is down
-				if(!is_border_wall(maze[element], BottomWall)){
-					add_neighbor(actual_hash, element, BottomWall);
-				}
-			}	
+					add_neighbor(hash, element, Maze::cell_e::RightWall);
+			}
+			if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
+			{ 
+				if(!is_border_wall(maze[element], Maze::cell_e::BottomWall))
+					add_neighbor(hash, element, Maze::cell_e::BottomWall);
+			}
+
+
+			// PRINT HASHS
+			std::cout << "ADD N ";
+			for(std::vector <int> &hash: hashs ) {
+			std::cout << " { ";
+			std::copy(hash.begin(),
+				hash.end(),
+				std::ostream_iterator<int>(std::cout, " "));
+				std::cout << "} ";
+			}
+			std::cout << std::endl;	
 		}
 	}
-	int Maze::get_hash(int element)
+	int Maze::get_hash(int e)
 	{
+
+		// PRINT HASHS
+		std::cout << "HASHS ";
+		for(std::vector <int> &hash: hashs ) {
+           std::cout << " { ";
+           std::copy(hash.begin(),
+              hash.end(),
+               std::ostream_iterator<int>(std::cout, " "));
+            std::cout << "} ";
+        }
+		std::cout << std::endl;
 		for(unsigned int index = 0; index < hashs.size(); index++) {
-			if (std::find(hashs[index].begin(), hashs[index].end(), element) != hashs[index].end()) return index;
+			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) return index;
 		}
 		std::vector <int> new_vec;
-		new_vec.push_back(element);
+		new_vec.push_back(e);
 		hashs.push_back(new_vec);
 		return hashs.size()-1;
 	}
@@ -68,25 +112,26 @@ namespace mzr{
 	{
 		if(wall == Maze::cell_e::LeftWall)
 		{
-			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - 1) != hashs[hash].end()))
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - 1) != hashs[hash].end()))
 			hashs[hash].push_back(element - 1);
 		}
-
 		if(wall == Maze::cell_e::UpperWall)
 		{
-			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - rows) != hashs[hash].end())) 
-			hashs[hash].push_back(element - rows);
+			//auto hash = get_hash(element);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - rows) != hashs[hash].end())) 
+			hashs[hash].push_back(element - cols);
 		}
-			
 		if(wall == Maze::cell_e::RightWall)
 		{	
-			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + 1) != hashs[hash].end())) 
-				hashs[hash].push_back(element + 1);
+			//auto hash = get_hash(element);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + 1) != hashs[hash].end())) 
+			hashs[hash].push_back(element + 1);
 		}
 		if(wall == Maze::cell_e::BottomWall)
 		{
-			if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + rows) != hashs[hash].end())) 
-				hashs[hash].push_back(element + rows);	
+			//auto hash = get_hash(element);
+			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + rows) != hashs[hash].end())) 
+			hashs[hash].push_back(element + cols);	
 		}
 	}
 	void Maze::create_maze()
@@ -139,9 +184,6 @@ namespace mzr{
 				if( left_neighbor.wall[Maze::cell_e::RightWall] != element.wall[Maze::cell_e::LeftWall])
 				{	
 					fix(element, left_neighbor, Maze::cell_e::LeftWall, Maze::cell_e::RightWall);
-					//knock_down(left_neighbor.x, left_neighbor.y, Maze::RightWall);
-					//knock_down(element.x, element.y, Maze::LeftWall);
-					
 				}
 			}
 			if (!is_border_wall(element, Maze::cell_e::UpperWall))
@@ -150,8 +192,7 @@ namespace mzr{
 				if( upper_neighbor.wall[Maze::cell_e::BottomWall] != element.wall[Maze::cell_e::UpperWall])
 				{
 					fix(element, upper_neighbor, Maze::cell_e::UpperWall, Maze::cell_e::BottomWall);
-					//knock_down(upper_neighbor.x, upper_neighbor.y, Maze::BottomWall);
-					//knock_down(element.x, element.y, Maze::UpperWall);
+				
 				}
 			}
 			if (!is_border_wall(element, Maze::cell_e::RightWall))
@@ -160,8 +201,7 @@ namespace mzr{
 				if( right_neighbor.wall[Maze::cell_e::LeftWall] != element.wall[Maze::cell_e::RightWall])
 				{
 					fix(element, right_neighbor, Maze::cell_e::RightWall, Maze::cell_e::LeftWall);
-					//knock_down(right_neighbor.x, right_neighbor.y, Maze::LeftWall);
-					//knock_down(element.x, element.y, Maze::RightWall);
+					
 				}
 			}
 			if (!is_border_wall(element, Maze::cell_e::BottomWall))
@@ -170,8 +210,6 @@ namespace mzr{
 				if( bottom_neighbor.wall[Maze::cell_e::UpperWall] != element.wall[Maze::cell_e::BottomWall])
 				{
 					fix(element, bottom_neighbor, Maze::cell_e::BottomWall, Maze::cell_e::UpperWall);
-					//knock_down(bottom_neighbor.x, bottom_neighbor.y, Maze::UpperWall);
-					//knock_down(element.x, element.y, Maze::BottomWall);
 				}
 			}
 			

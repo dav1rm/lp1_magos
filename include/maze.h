@@ -29,7 +29,7 @@
 				std::vector <std::vector <int>> hashs;
 				//std::string ** hash_table;
 				Maze(int=8, int=6);
-				int get_hash(int element);
+				int get_hash(int e);
 				int xy_to_vet(int x, int y);
 				bool is_border_wall(cell element, cell_e wall);
 				bool has_x_down_walls(std::string wall_string, int x);
