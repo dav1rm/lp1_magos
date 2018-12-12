@@ -41,14 +41,30 @@ namespace mzr{
 			auto e_act = maze[element];
 			//while(has_x_down_walls(e_act.wall, 1) ) // e parede aberta não for a mesma da parede anterior
 			//{
-				if (has_hash(xy_to_vet(e_act.x, e_act.y)))
-				{
-					if(hashs.size() > 0) add_neighbors(element, 0);
-				} 
-				else 
-				{
-					if(create_hash_vec(e_act)) add_neighbors(element, hashs.size()-1);
-				}
+				if (!has_hash(xy_to_vet(e_act.x, e_act.y)))
+					if(create_hash_vec(e_act)) 
+					{	
+						add_element(hashs.size()-1, element);
+						if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
+							if(!is_border_wall(e_act, Maze::cell_e::LeftWall)) 
+								add_element(hashs.size()-1, element - 1);
+
+						if(maze[element].wall[Maze::cell_e::UpperWall] != '1')
+							if(!is_border_wall(e_act, Maze::cell_e::UpperWall)) 
+								add_element(hashs.size()-1, element - cols);
+
+						if(maze[element].wall[Maze::cell_e::RightWall] != '1')
+							if(!is_border_wall(e_act, Maze::cell_e::RightWall)) 
+								add_element(hashs.size()-1, element + 1);
+
+						if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
+							if(!is_border_wall(e_act, Maze::cell_e::BottomWall)) 
+								add_element(hashs.size()-1, element + cols);	
+						
+						
+					}
+					
+				
 			//}
 
 		}
@@ -88,6 +104,10 @@ namespace mzr{
 			}
 		}
 		return value;
+	}
+	void Maze::add_element(int hash, int element)
+	{
+		hashs[hash].push_back(element);
 	}
 	void Maze::add_neighbors(int hash, int element)
 	{
