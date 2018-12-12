@@ -44,22 +44,28 @@ namespace mzr{
 				if (!has_hash(xy_to_vet(e_act.x, e_act.y)))
 					if(create_hash_vec(e_act)) 
 					{	
-						add_element(hashs.size()-1, element);
+						//if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element)))
+							add_element(hashs.size()-1, element);
+
 						if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
 							if(!is_border_wall(e_act, Maze::cell_e::LeftWall)) 
-								add_element(hashs.size()-1, element - 1);
+								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-1) != hashs[hashs.size()-1].end())) 
+									add_element(hashs.size()-1, element - 1);
 
 						if(maze[element].wall[Maze::cell_e::UpperWall] != '1')
 							if(!is_border_wall(e_act, Maze::cell_e::UpperWall)) 
-								add_element(hashs.size()-1, element - cols);
+								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-cols) != hashs[hashs.size()-1].end())) 
+									add_element(hashs.size()-1, element - cols);
 
 						if(maze[element].wall[Maze::cell_e::RightWall] != '1')
 							if(!is_border_wall(e_act, Maze::cell_e::RightWall)) 
-								add_element(hashs.size()-1, element + 1);
+								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+1) != hashs[hashs.size()-1].end())) 
+									add_element(hashs.size()-1, element + 1);
 
 						if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
 							if(!is_border_wall(e_act, Maze::cell_e::BottomWall)) 
-								add_element(hashs.size()-1, element + cols);	
+								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+cols) != hashs[hashs.size()-1].end())) 
+									add_element(hashs.size()-1, element + cols);	
 						
 						
 					}
