@@ -41,18 +41,16 @@ namespace mzr{
 			auto e_act = maze[element];
 			//while(has_x_down_walls(e_act.wall, 1) ) // e parede aberta não for a mesma da parede anterior
 			//{
-				if (has_hash(xy_to_vet(e_act.x, e_act.y)) != -1)
+				if (has_hash(xy_to_vet(e_act.x, e_act.y)))
 				{
-					add_neighbors(element, has_hash(xy_to_vet(e_act.x, e_act.y)));
+					if(hashs.size() > 0) add_neighbors(element, 0);
 				} 
 				else 
 				{
-					std::vector <int> new_hash;
-					new_hash.push_back(xy_to_vet(e_act.x, e_act.y));
-					hashs.push_back(new_hash);
-					add_neighbors(element, hashs.size()-1);
+					if(create_hash_vec(e_act)) add_neighbors(element, hashs.size()-1);
 				}
 			//}
+
 		}
 		for(std::vector <int> &hash: hashs ) {
 			std::cout << " { ";
@@ -61,34 +59,35 @@ namespace mzr{
 				std::ostream_iterator<int>(std::cout, " "));
 				std::cout << "} ";
 		}
+
+		std::cout << std::endl;
 	}
-	int Maze::has_hash(int e)
+	bool Maze::create_hash_vec(Maze::cell element)
+	{
+		std::vector <int> new_hash;
+		int el = xy_to_vet(element.x, element.y);
+		new_hash.push_back(el);
+		hashs.push_back(new_hash);
+		return true;
+	}
+	bool Maze::has_hash(int e)
 	{
 		for(unsigned int index = 0; index < hashs.size(); index++) {
-			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) return index;
+			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) return true;
 		}
-		return -1;
+		return false;
 	}
 	int Maze::get_hash(int e)
 	{
-
-		// PRINT HASHS
-		std::cout << "HASHS ";
-		for(std::vector <int> &hash: hashs ) {
-           std::cout << " { ";
-           std::copy(hash.begin(),
-              hash.end(),
-               std::ostream_iterator<int>(std::cout, " "));
-            std::cout << "} ";
-        }
-		std::cout << std::endl;
+		int value = 0;
 		for(unsigned int index = 0; index < hashs.size(); index++) {
-			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) return index;
+			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) 
+			{
+				value = index;
+				break;
+			}
 		}
-		std::vector <int> new_vec;
-		new_vec.push_back(e);
-		hashs.push_back(new_vec);
-		return hashs.size()-1;
+		return value;
 	}
 	void Maze::add_neighbors(int hash, int element)
 	{
