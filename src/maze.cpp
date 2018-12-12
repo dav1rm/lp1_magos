@@ -33,59 +33,41 @@ namespace mzr{
 		//			 01	 11
 		maze[xy_to_vet(y, x)].wall[wall] = '0';
 	}
+
 	void Maze::create_hash()
-	{	
-		for(unsigned int element = 0; element < maze.size(); element ++)
+	{
+		for (unsigned int element = 0; element < maze.size(); element ++)
 		{
-			std::cout << "element " << element << std::endl;
-			auto hash = get_hash(element);
-			// PRINT HASHS
-			std::cout << "ADD " << hash << std::endl;	
-			
-			// PRINT HASHS
-			std::cout << "HASHS ";
-			for(std::vector <int> &hash: hashs ) {
-			std::cout << " { ";
-			std::copy(hash.begin(),
-				hash.end(),
-				std::ostream_iterator<int>(std::cout, " "));
-				std::cout << "} ";
-			}
-			std::cout << std::endl;
-			
-			if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
-			{
-				if(!is_border_wall(maze[element], Maze::cell_e::LeftWall))
-					add_neighbor(hash, element, Maze::cell_e::LeftWall);
-			}
-			if(maze[element].wall[Maze::cell_e::UpperWall] != '1') 	
-			{
-				if(!is_border_wall(maze[element], Maze::cell_e::UpperWall))
-					add_neighbor(hash, element, Maze::cell_e::UpperWall);
-			}
-			if(maze[element].wall[Maze::cell_e::RightWall] != '1') 	// checMaze::cell_e::LeftWall if right wall is down
-			{
-				if(!is_border_wall(maze[element], Maze::cell_e::RightWall))
-					add_neighbor(hash, element, Maze::cell_e::RightWall);
-			}
-			if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
-			{ 
-				if(!is_border_wall(maze[element], Maze::cell_e::BottomWall))
-					add_neighbor(hash, element, Maze::cell_e::BottomWall);
-			}
-
-
-			// PRINT HASHS
-			std::cout << "ADD N ";
-			for(std::vector <int> &hash: hashs ) {
-			std::cout << " { ";
-			std::copy(hash.begin(),
-				hash.end(),
-				std::ostream_iterator<int>(std::cout, " "));
-				std::cout << "} ";
-			}
-			std::cout << std::endl;	
+			auto e_act = maze[element];
+			//while(has_x_down_walls(e_act.wall, 1) ) // e parede aberta não for a mesma da parede anterior
+			//{
+				if (has_hash(xy_to_vet(e_act.x, e_act.y)) != -1)
+				{
+					add_neighbors(element, has_hash(xy_to_vet(e_act.x, e_act.y)));
+				} 
+				else 
+				{
+					std::vector <int> new_hash;
+					new_hash.push_back(xy_to_vet(e_act.x, e_act.y));
+					hashs.push_back(new_hash);
+					add_neighbors(element, hashs.size()-1);
+				}
+			//}
 		}
+		for(std::vector <int> &hash: hashs ) {
+			std::cout << " { ";
+			std::copy(hash.begin(),
+				hash.end(),
+				std::ostream_iterator<int>(std::cout, " "));
+				std::cout << "} ";
+		}
+	}
+	int Maze::has_hash(int e)
+	{
+		for(unsigned int index = 0; index < hashs.size(); index++) {
+			if (std::find(hashs[index].begin(), hashs[index].end(), e) != hashs[index].end()) return index;
+		}
+		return -1;
 	}
 	int Maze::get_hash(int e)
 	{
@@ -108,29 +90,22 @@ namespace mzr{
 		hashs.push_back(new_vec);
 		return hashs.size()-1;
 	}
-	void Maze::add_neighbor(int hash, int element, Maze::cell_e wall)
+	void Maze::add_neighbors(int hash, int element)
 	{
-		if(wall == Maze::cell_e::LeftWall)
+		if(maze[element].wall[Maze::cell_e::LeftWall] != '1' && !(is_border_wall(maze[element], Maze::cell_e::LeftWall)) )
 		{
-			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - 1) != hashs[hash].end()))
 			hashs[hash].push_back(element - 1);
 		}
-		if(wall == Maze::cell_e::UpperWall)
+		if(maze[element].wall[Maze::cell_e::UpperWall] != '1' && !(is_border_wall(maze[element], Maze::cell_e::UpperWall)))
 		{
-			//auto hash = get_hash(element);
-			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element - rows) != hashs[hash].end())) 
 			hashs[hash].push_back(element - cols);
 		}
-		if(wall == Maze::cell_e::RightWall)
+		if(maze[element].wall[Maze::cell_e::RightWall] != '1' && !(is_border_wall(maze[element], Maze::cell_e::RightWall)))
 		{	
-			//auto hash = get_hash(element);
-			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + 1) != hashs[hash].end())) 
 			hashs[hash].push_back(element + 1);
 		}
-		if(wall == Maze::cell_e::BottomWall)
+		if(maze[element].wall[Maze::cell_e::BottomWall] != '1' && !(is_border_wall(maze[element], Maze::cell_e::BottomWall)))
 		{
-			//auto hash = get_hash(element);
-			//if (!(std::find(hashs[hash].begin(), hashs[hash].end(), element + rows) != hashs[hash].end())) 
 			hashs[hash].push_back(element + cols);	
 		}
 	}

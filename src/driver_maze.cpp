@@ -20,7 +20,7 @@ int main(void)
         // }
 
     // Construtor do render e passando o maze (no render recebemos com Maze *).
-    mzr::Render render( &m, 400,400 );
+    mzr::Render render( &m, 300,300 );
     // vamos derrubar a parede direita da celulua (1,2)
     //m.knock_down( 1, 2, mzr::Maze::cell_e::RightWall );
 	// vamos derrubar a parede de baixo da mesma célula.

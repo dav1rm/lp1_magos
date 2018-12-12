@@ -29,13 +29,14 @@
 				std::vector <std::vector <int>> hashs;
 				//std::string ** hash_table;
 				Maze(int=8, int=6);
+				int has_hash(int e);
 				int get_hash(int e);
 				int xy_to_vet(int x, int y);
 				bool is_border_wall(cell element, cell_e wall);
 				bool has_x_down_walls(std::string wall_string, int x);
 				void fix(cell element, cell neighbor, cell_e wall_e, cell_e wall_n);
 				void fix_collisions();
-				void add_neighbor(int hash, int element, cell_e wall);
+				void add_neighbors(int hash, int element);
 				void create_maze();
 				void create_hash();
 				void set_border();
