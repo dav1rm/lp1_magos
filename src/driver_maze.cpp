@@ -10,7 +10,7 @@ int main(void)
     // Cria um labirinto 5 x 7.
     mzr::Maze m( 2, 2 );
     m.create_maze();
-    // m.create_hash();
+    m.create_hash();
         // for(std::vector <int> &hash: m.hashs ) {
         //    std::cout << " { ";
         //    std::copy(hash.begin(),
