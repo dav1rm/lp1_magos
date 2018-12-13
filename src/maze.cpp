@@ -11,19 +11,19 @@ namespace mzr{
 	bool Maze::is_border_wall(Maze::cell element, Maze::cell_e wall)
 	{
 		if (wall == Maze::cell_e::LeftWall)
-			if (element.y == 0) return true;
-		if (wall == Maze::cell_e::UpperWall)
 			if (element.x == 0) return true;
+		if (wall == Maze::cell_e::UpperWall)
+			if (element.y == 0) return true;
 		if (wall == Maze::cell_e::RightWall)
-			if (element.y == cols - 1) return true;
+			if (element.x == cols - 1) return true;
 		if (wall == Maze::cell_e::BottomWall)
-			if (element.x == rows - 1) return true;
+			if (element.y == rows - 1) return true;
 		
 		return false;
 	}
 
 	void Maze::build_wall(int x, int y, Maze::cell_e wall)
-	{maze[xy_to_vet(y, x)].wall[wall] = '1';}
+	{maze[xy_to_vet(x,y)].wall[wall] = '1';}
 
 	void Maze::knock_down(int x, int y, Maze::cell_e wall)
 	{
@@ -31,41 +31,31 @@ namespace mzr{
 		//	00	01  mas sim
 		//	10	11	 00	 10
 		//			 01	 11
-		maze[xy_to_vet(y, x)].wall[wall] = '0';
+		maze[xy_to_vet(x,y)].wall[wall] = '0';
 	}
+	// void Maze::add_to_hash(int element, int hash)
+	// {
 
+	// }
 	void Maze::create_hash()
 	{
-		for (unsigned int element = 0; element < maze.size(); element ++)
-		{
-			auto e_act = maze[element];
+		// for (unsigned int element = 0; element < maze.size(); element ++)
+		// {
+			auto e_act = maze[0];
 			//while(has_x_down_walls(e_act.wall, 1) ) // e parede aberta não for a mesma da parede anterior
 			//{
+
+				// existe vizinhos?
+				// os vizinhos ja estao na minha hash table?
+				// adiciona ele na minha hash table
+				// chama recusivamente para o elemento adicionado
+
 				if (!has_hash(xy_to_vet(e_act.x, e_act.y)))
 					if(create_hash_vec(e_act)) 
 					{	
 						//if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element)))
-							add_element(hashs.size()-1, element);
-
-						if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
-							if(!is_border_wall(e_act, Maze::cell_e::LeftWall)) 
-								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-1) != hashs[hashs.size()-1].end())) 
-									add_element(hashs.size()-1, element - 1);
-
-						if(maze[element].wall[Maze::cell_e::UpperWall] != '1')
-							if(!is_border_wall(e_act, Maze::cell_e::UpperWall)) 
-								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-cols) != hashs[hashs.size()-1].end())) 
-									add_element(hashs.size()-1, element - cols);
-
-						if(maze[element].wall[Maze::cell_e::RightWall] != '1')
-							if(!is_border_wall(e_act, Maze::cell_e::RightWall)) 
-								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+1) != hashs[hashs.size()-1].end())) 
-									add_element(hashs.size()-1, element + 1);
-
-						if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
-							if(!is_border_wall(e_act, Maze::cell_e::BottomWall)) 
-								if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+cols) != hashs[hashs.size()-1].end())) 
-									add_element(hashs.size()-1, element + cols);	
+							add_element(hashs.size()-1, 0);
+	
 						
 						
 					}
@@ -73,7 +63,7 @@ namespace mzr{
 				
 			//}
 
-		}
+		// }
 		for(std::vector <int> &hash: hashs ) {
 			std::cout << " { ";
 			std::copy(hash.begin(),
@@ -87,8 +77,8 @@ namespace mzr{
 	bool Maze::create_hash_vec(Maze::cell element)
 	{
 		std::vector <int> new_hash;
-		int el = xy_to_vet(element.x, element.y);
-		new_hash.push_back(el);
+		// int el = xy_to_vet(element.x, element.y);
+		// new_hash.push_back(el);
 		hashs.push_back(new_hash);
 		return true;
 	}
@@ -113,7 +103,43 @@ namespace mzr{
 	}
 	void Maze::add_element(int hash, int element)
 	{
+		std::cout << "entrou: x=" << maze[element].x << " e y=" << maze[element].y << "\n";
 		hashs[hash].push_back(element);
+
+		if(maze[element].wall[Maze::cell_e::LeftWall] != '1')
+			if(!is_border_wall(maze[element], Maze::cell_e::LeftWall)) 
+				if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-1) != hashs[hashs.size()-1].end())) 
+				{
+					std::cout << "achou l " << element << "\n";
+					add_element(hashs.size()-1, element - 1);
+				}
+
+		if(maze[element].wall[Maze::cell_e::UpperWall] != '1')
+			if(!is_border_wall(maze[element], Maze::cell_e::UpperWall)) 
+				if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element-cols) != hashs[hashs.size()-1].end())) 
+				{
+					std::cout << "achou u " << element << "\n";
+					add_element(hashs.size()-1, element - cols);
+				}
+
+		if(maze[element].wall[Maze::cell_e::RightWall] != '1')
+			if(!is_border_wall(maze[element], Maze::cell_e::RightWall)) 
+				if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+1) != hashs[hashs.size()-1].end())) 
+				{
+					std::cout << "achou r " << element << "\n";
+					add_element(hashs.size()-1, element + 1);
+				}
+
+		if(maze[element].wall[Maze::cell_e::BottomWall] != '1')
+			if(!is_border_wall(maze[element], Maze::cell_e::BottomWall)) 
+				if (!(std::find(hashs[hashs.size()-1].begin(), hashs[hashs.size()-1].end(), element+cols) != hashs[hashs.size()-1].end())) 
+				{
+					std::cout << "achou b " << element << "\n";
+					add_element(hashs.size()-1, element + cols);
+
+				}
+
+		std::cout << "sobrou: " << element << "\n";
 	}
 	void Maze::add_neighbors(int hash, int element)
 	{
@@ -150,7 +176,7 @@ namespace mzr{
 		fix_collisions();
 	}
 	int Maze::xy_to_vet(int x, int y)
-		{return ((rows * x) + y);}
+		{return ((rows * y) + x);}
 	
 	void Maze::fix(Maze::cell element, Maze::cell neighbor, Maze::cell_e wall_e, Maze::cell_e wall_n)
 	{
