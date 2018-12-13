@@ -45,10 +45,15 @@ namespace mzr
 
       for (unsigned int i = 0; i < m_maze.maze.size(); i++)
       {
+        //std::cout << "ELEMENT " << i << " - " << m_maze.maze[i].wall << std::endl;
         if(m_maze.maze[i].wall[0] == '1') c.vline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //left
         if(m_maze.maze[i].wall[1] == '1') c.hline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin, line_h_size, canvas::STEEL_BLUE); //upper
         if(m_maze.maze[i].wall[2] == '1') c.vline(m_maze.maze[i].x * line_h_size + margin + line_h_size, m_maze.maze[i].y * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //right
         if(m_maze.maze[i].wall[3] == '1') c.hline(m_maze.maze[i].x * line_h_size + margin, m_maze.maze[i].y * line_v_size + margin + line_v_size, line_h_size, canvas::STEEL_BLUE); //bottom
+        //if(m_maze.maze[i].wall[0] == '1') c.vline((i % m_maze.cols) * line_h_size + margin, (i % m_maze.rows) * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //left
+        //if(m_maze.maze[i].wall[1] == '1') c.hline((i % m_maze.cols) * line_h_size + margin, (i % m_maze.rows) * line_v_size + margin, line_h_size, canvas::STEEL_BLUE); //upper
+        //if(m_maze.maze[i].wall[2] == '1') c.vline((i % m_maze.cols) * line_h_size + margin, (i % m_maze.rows) * line_v_size + margin, line_v_size, canvas::STEEL_BLUE); //right
+        //if(m_maze.maze[i].wall[3] == '1') c.hline((i % m_maze.cols) * line_h_size + margin, (i % m_maze.rows) * line_v_size + margin, line_h_size, canvas::STEEL_BLUE); //bottom
 
       }
      
